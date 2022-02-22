@@ -55,11 +55,13 @@ int main()
     for (int i = 2; i < n; i++)
         insert(H, i);
 
+    printf("Created Heap\n");
     printHeap(H, n);
 
    for(int i = 1 ; i<n ; i++)
         delete (H, n-i);
-
+    
+     printf("Sorted Heap\n");
     printHeap(H, n);
 
     return 0;

@@ -127,7 +127,7 @@ node *pop()
     if (top == NULL)
     {
         // printf("\nStack UnderFlow\n");
-        return;
+        return NULL;
     }
 
     else
@@ -139,6 +139,13 @@ node *pop()
     return temp;
 }
 
+int isempty()
+{
+    if(top==NULL)
+    return 0;
+    else
+    return 1;
+}
 //////////////////////////
 void Inorder(node *temp)
 {
@@ -194,28 +201,51 @@ void preOrderStack(node *temp)
     }
 }
 
-void PostorderStack(node *temp)
-{
-    node *t = NULL;
-    while (1)
-    {
+// void PostorderStack(node *temp)
+// {
+//     node *t = NULL;
+//     while (1)
+//     {
 
-        while (temp->lc != NULL)
-        {
-            push(temp);
-            temp = temp->lc;
-        }
-        while (temp->rc == NULL || temp->rc == t)
-        {
-            printf("-->%d", temp->data);
-            t = temp;
-            temp = pop();
-            if (temp == NULL)
-                return;
-        }
-        push(temp);
-        temp = temp->rc;
+//         while (temp->lc != NULL)
+//         {
+//             push(temp);
+//             temp = temp->lc;
+//         }
+//         while (temp->rc == NULL || temp->rc == t)
+//         {
+//             printf("-->%d", temp->data);
+//             t = temp;
+//             temp = pop();
+//             if (temp == NULL)
+//                 return;
+//         }
+//         push(temp);
+//         temp = temp->rc;
+//     }
+// }
+
+void PostorderStack(node* temp)
+{
+    push(temp);
+    node* t = NULL;
+    int arr[50],count=0;
+    while(isempty())
+    {
+              t = pop();
+              
+              arr[count++] = t->data;
+
+              if(t->lc!=NULL)
+              push(t->lc);
+
+              if(t->rc!=NULL)
+              push(t->rc);
     }
+
+    for(int i = count-1 ; i>-1 ; i--)
+    printf("%d-->",arr[i]);
+    printf("\n");
 }
 void InorderStack(node *temp)
 {

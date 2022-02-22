@@ -21,7 +21,7 @@ Tree *createTree(int val)
 void Inorder(Tree *root)
 {
 
-    Tree *temp = (Tree *)malloc(sizeof(Tree));
+    Tree *temp ;
     temp = root;
     if (root == NULL)
         return;
@@ -33,7 +33,7 @@ void Inorder(Tree *root)
 void preorder(Tree *root)
 {
 
-    Tree *temp = (Tree *)malloc(sizeof(Tree));
+    Tree *temp;
     temp = root;
     if (root == NULL)
         return;
@@ -45,13 +45,13 @@ void preorder(Tree *root)
 void postorder(Tree *root)
 {
 
-    Tree *temp = (Tree *)malloc(sizeof(Tree));
+    Tree *temp ;
     temp = root;
     if (root == NULL)
         return;
 
-    preorder(temp->lc);
-    preorder(temp->rc);
+    postorder(temp->lc);
+    postorder(temp->rc);
     printf("%d-->", temp->data);
 }
 

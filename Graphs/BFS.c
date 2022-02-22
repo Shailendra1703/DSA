@@ -67,5 +67,5 @@ int main()
     {
         visited[i] = 0;
     }
-    BFSfx(2, visited);
+    BFSfx(1, visited);
 }

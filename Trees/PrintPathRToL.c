@@ -48,6 +48,7 @@ void Inorder(node *root)
     pop();
 }
 
+
 int height(node *root)
 {
     int t1 = 0, t2 = 0;

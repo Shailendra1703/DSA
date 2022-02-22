@@ -31,6 +31,7 @@ BT *createTree()
     return temp;
 }
 
+
 // BT *create(int n)
 // {
 //     BT *node = (BT *)malloc(sizeof(BT));
