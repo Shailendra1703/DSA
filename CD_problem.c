@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 void Tower(int ,char ,char , char);
-int count =1;
+int count = 1;
 int main()
 {
     int NOC;

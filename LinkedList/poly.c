@@ -67,7 +67,7 @@ void Addition(struct term *poly1, struct term *poly2)
     {
         if (t1->exp == t2->exp)
         {
-            create(&New_poly, (t1->coef * t2->coef), t1->exp);
+            create(&New_poly, (t1->coef + t2->coef), t1->exp);
             t1 = t1->next;
             t2 = t2->next;
         }

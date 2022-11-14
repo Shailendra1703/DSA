@@ -1,5 +1,6 @@
 
 // queue using two pointers................
+
 #include <stdio.h>
 #include <stdlib.h>
 
