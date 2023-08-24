@@ -4,44 +4,47 @@ using namespace std;
 struct Node
 {
     string value;
+    Node *parent;
+    int an = 0, dec = 0;
+    bool islocked = false;
     vector<Node *> links;
 
-    Node(string value)
+    Node(string value, Node *parent)
     {
         this->value = value;
+        this->parent = parent;
+        an = 0;
+        dec = 0;
+        islocked = false;
     }
 
-    void addLinks(vector<Node *> &v)
+    void addLinks(vector<string> &v, Node *p)
     {
         for (auto &it : v)
-            links.push_back(it);
+            links.push_back(new Node(it, p));
     }
 };
 
-Node *createTree(Node *root, int m)
+Node *createTree(Node *root, int m, vector<string> &s)
 {
 
     queue<Node *> q;
     q.push(root);
 
+    int stop = 1;
     while (!q.empty())
     {
         Node *temp = q.front();
         q.pop();
 
-        vector<Node *> v;
+        if (stop >= s.size())
+            continue;
 
-        for (int i = 0; i < m; i++)
-        {
-            string p;
-            cout << "Enter value of " << i + 1 << " child of " << temp->value << " : " << endl;
-            cin >> p;
-            if (p != "no")
-                v.push_back(new Node(p));
-        }
-
-        if (v.size() != 0)
-            temp->addLinks(v);
+        vector<string> v;
+        for (int i = stop; i < stop + m; i++)
+            v.push_back(s[i]);
+        temp->addLinks(v, temp);
+        stop += m;
 
         for (auto it : temp->links)
             q.push(it);
@@ -50,7 +53,21 @@ Node *createTree(Node *root, int m)
     return root;
 }
 
-void print(Node *root)
+class Tree
+{
+private:
+    Node *root;
+    unordered_map<string, Node *> mp;
+
+public:
+    Tree()
+    {
+        root = NULL;
+    }
+}
+
+void
+print(Node *root)
 {
     cout << root->value << " : ";
     for (auto it : root->links)
@@ -63,15 +80,19 @@ void print(Node *root)
 int main()
 {
     Node *root;
-    string temp;
-    int m;
+    int m, n;
+    cout << "Enter No. of node : ";
+    cin >> n;
     cout << "Enter No. of childs per Node : ";
     cin >> m;
-    cout << "Enter root Node data : ";
-    cin >> temp;
 
-    root = new Node(temp);
-    root = createTree(root, m);
+    vector<string> temp(n);
+
+    for (int i = 0; i < n; i++)
+        cin >> temp[i];
+
+    root = new Node(temp[0], nullptr);
+    root = createTree(root, m, temp);
 
     print(root);
 
