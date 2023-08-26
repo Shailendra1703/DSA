@@ -3,6 +3,17 @@
     "*.ejs": "html",
     "ostream": "cpp",
     "chrono": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "new": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "iterator": "cpp",
+    "string_view": "cpp",
+    "scoped_allocator": "cpp",
+    "regex": "cpp"
   }
 }

@@ -8,6 +8,7 @@ struct Node
     int an = 0, dec = 0;
     bool islocked = false;
     vector<Node *> links;
+    int uid;
 
     Node(string value, Node *parent)
     {
@@ -15,6 +16,7 @@ struct Node
         this->parent = parent;
         an = 0;
         dec = 0;
+        uid = 0;
         islocked = false;
     }
 
@@ -60,14 +62,130 @@ private:
     unordered_map<string, Node *> mp;
 
 public:
-    Tree()
+    Tree(Node *r)
     {
-        root = NULL;
+        root = r;
     }
-}
 
-void
-print(Node *root)
+    void fillvToN(Node *r)
+    {
+        if (!r)
+            return;
+        mp[r->value] = r;
+
+        for (auto it : r->links)
+            fillvToN(it);
+    }
+
+    void informDec(Node *t, int val)
+    {
+        for (auto it : t->links)
+        {
+            it->an += val;
+            informDec(it, 1);
+        }
+    }
+
+    // getting all nodes which will be unlocked
+    bool verify(Node *t, int id, vector<Node *> &v)
+    {
+        if (t->islocked)
+        {
+            if (t->uid != id)
+                return false;
+
+            v.push_back(t);
+        }
+
+        if (t->dec == 0)
+            return true;
+
+        bool ans = true;
+        for (auto it : t->links)
+        {
+            ans &= verify(it, id, v);
+            if (ans == false)
+                return false;
+        }
+
+        return ans;
+    }
+
+    bool lock(string sq, int id)
+    {
+        Node *r = mp[sq];
+
+        if (r->islocked)
+            return false;
+
+        if (r->an != 0 || r->dec != 0)
+            return false;
+
+        Node *curr = r->parent;
+        while (curr)
+        {
+            curr->dec++;
+            curr = curr->parent;
+        }
+
+        informDec(r, 1);
+
+        r->uid = id;
+        r->islocked = true;
+
+        return true;
+    }
+
+    bool unlock(string s, int id)
+    {
+        Node *t = mp[s];
+
+        if (!t->islocked)
+            return false;
+
+        if (t->uid != id)
+            return false;
+
+        Node *curr = t->parent;
+
+        while (curr)
+        {
+            curr->dec--;
+            curr = curr->parent;
+        }
+
+        informDec(t, -1);
+        t->islocked = false;
+        return true;
+    }
+
+    bool upgrade(string s, int id)
+    {
+        Node *t = mp[s];
+        if (t->islocked)
+            return false;
+
+        if (t->an != 0)
+            return false;
+        if (t->dec == 0)
+            return false;
+
+        vector<Node *> vec;
+        if (verify(t, id, vec))
+        {
+            for (auto it : vec)
+                unlock(it->value, it->uid);
+        }
+        else
+        {
+            return false;
+        }
+
+        return lock(s, id);
+    }
+};
+
+void print(Node *root)
 {
     cout << root->value << " : ";
     for (auto it : root->links)
@@ -81,9 +199,7 @@ int main()
 {
     Node *root;
     int m, n;
-    cout << "Enter No. of node : ";
     cin >> n;
-    cout << "Enter No. of childs per Node : ";
     cin >> m;
 
     vector<string> temp(n);
@@ -94,7 +210,25 @@ int main()
     root = new Node(temp[0], nullptr);
     root = createTree(root, m, temp);
 
-    print(root);
+    Tree t(root);
+    t.fillvToN(root);
+
+    int op, sq, uid;
+
+    cout << t.lock("China", 9) << endl;
+
+    cout << t.lock("India", 9) << endl;
+    cout << t.upgrade("Asia", 9) << endl;
+
+    cout << t.unlock("India", 9);
 
     return 0;
 }
+
+/*
+The number of iterations is roughly O(m^h).
+The work done within each iteration is constant, except for the addLinks operation, which is O(m).
+Therefore, the overall time complexity of the createTree function is roughly O(m^(log_m(n))) * O(m), which simplifies to O(m^(log_m(n) + 1)).
+
+In Big O notation, this can be further simplified to O(m^(log_m(n)))
+*/
