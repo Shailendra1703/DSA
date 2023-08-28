@@ -192,6 +192,7 @@ public:
 Example Input:
 7
 2
+5
 World
 Asia
 Africa
@@ -199,8 +200,9 @@ India
 China
 SouthAfrica
 Egypt
-1 China 9
 1 India 9
+1 China 9
+1 Asia 9
 3 Asia 9
 2 India 9
 */
@@ -231,7 +233,7 @@ int main()
 
 	Node *r = new Node(s[0], nullptr);
 	r = buildTree(r, m, s);
-	printTree(r);
+	// printTree(r);
 
 	Tree t(r);
 	t.fillVtoN(t.getRoot());
@@ -247,7 +249,7 @@ int main()
 			if (t.lock(sq, uid))
 			{
 				cout << "true\n";
-				printTree(r);
+				// printTree(r);
 			}
 			else
 				cout << "false\n";
@@ -262,7 +264,7 @@ int main()
 			if (t.upgrade(sq, uid))
 			{
 				cout << "true\n";
-				printTree(r);
+				// printTree(r);
 			}
 			else
 				cout << "false\n";
